@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="sub-header">Issue NFT</h2>
+        <div class="container col-sm-12">
+
+            <div class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="asset_name">Name</label>
+                    <input type="text" class="form-control" id="asset_name" placeholder="Name">
+                </div>
+                <br/>
+                <br/>
+
+                <div class="form-group">
+                    <label class="sr-only" for="asset_icon_url">Icon URL</label>
+                    <input type="text" class="form-control" id="asset_icon_url" placeholder="Icon URL">
+                </div>
+                <br/>
+                <br/>
+                <button type="submit" class="btn btn-default issue-asset">Issue</button>
+            </div>
+            <br/>
+            <br/>
+        </div>
+    </div>
+{% endblock %}
+
+{% block postscript %}
+
+<script>
+    $(document).ready(function () {
+        $('.issue-asset').on('click', function (event) {
+            let asset_name = $('#asset_name').val();
+            if (!asset_name) {
+                alert('Asset name is required!');
+                return
+            }
+            let asset_icon_url = $('#asset_icon_url').val();
+            if (!asset_icon_url) {
+                alert('Asset icon is required!');
+                return
+            }
+            var btn = $(this);
+            btn.html(`Issue <span class="glyphicon glyphicon-refresh spinning"></span>`);
+            btn.attr('disabled', true);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/v1/issue_asset/',
+                data:  JSON.stringify({
+                    asset_name: asset_name,
+                    asset_icon_url: asset_icon_url
+                }),
+                dataType: 'json',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+            })
+            .done(function (data) {
+                window.location.href = '/';
+            })
+            .fail(function(data){
+                alert("Issue NFT failed!");
+                btn.html(`Issue`);
+                btn.attr('disabled', false);
+            });
+            event.preventDefault();
+        });
+    });
+</script>
+
+{% endblock %}

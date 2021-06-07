@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{%  block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="sub-header">Collected NFTs</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Id</th>
+                </tr>
+
+                </thead>
+                <tbody>
+                {% if tokens %}
+                {% for token in tokens %}
+                    {% if token.amount != '0' %}
+                    <tr>
+                        <td>
+                        <h3>{{ token.name }}</h3>
+                        {% if token.image_url %}
+                            <img src="{{ token.image_url }}" width="300" height="300">
+                        {% endif %}
+                        </td>
+                        <td>{{ token.id }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <h2 class="sub-header">Address</h2>
+        {{ address }}
+    </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+version: "3"
+services:
+  issuer_app:
+    build:
+      context: .
+      dockerfile: Dockerfile_issuer
+    container_name: issuer_app
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    networks:
+      - solana
+    volumes:
+      - ./asset_issuer:/asset_issuer
+    environment:
+      - RPC_URI=https://api.devnet.solana.com
+      - PYTHONUNBUFFERED=TRUE
+
+  buyer_app:
+    build:
+      context: .
+      dockerfile: Dockerfile_buyer
+    container_name: buyer_app
+    ports:
+      - "5001:5001"
+    restart: unless-stopped
+    networks:
+      - solana
+    volumes:
+      - ./asset_buyer:/asset_buyer
+    environment:
+      - RPC_URI=https://api.devnet.solana.com
+      - ASSET_DETAILS_API=http://issuer_app:5000/api/v1/get_assets_info/
+      - PYTHONUNBUFFERED=TRUE
+networks:
+  solana:

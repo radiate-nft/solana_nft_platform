@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{%  block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="sub-header">Issued NFTs</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Id</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for asset in assets %}
+                    <tr>
+                        <td>
+                        <h3>{{ asset.name }}</h3>
+                        {% if asset.image_url %}
+                            <img src="{{ asset.image_url }}" width="300" height="300">
+                        {% endif %}
+                        </td>
+                        <td>{{ asset.id }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
